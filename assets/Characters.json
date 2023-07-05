@@ -1,0 +1,23 @@
+{
+  "Characters": [
+    {
+      "Name": "Viv",
+      "Management":{"ip":20, "ip total":900, "Hp":15, "Hum":37, "Luck":0},
+      "Role Info": {"Role":"Netrunner", "Rank":4},
+      "Attributes": {"INT":6, "REF":0, "DEX":0, "TECH":8, "COOL":0, "WILL":0, "MOVE":0, "BODY":0, "EMP":0, "LUCK":1, "HP":30},
+      "Skills": {"Perception":6, "Human Perception":2},
+      "Gear": {"Virtuality Goggles": 1, "Pistol": 1, "Bullets": 20},
+      "Notes": {"Lifepath":"Blah", "Role Lifepath":"Blah", "Notes":"Blah"}
+    },
+
+    {
+      "Name": "Bateman",
+      "Management":{"ip":20, "ip total":900, "Hp":23, "Hum":37, "Luck":0},
+      "Role Info": {"Role":"Nomad", "Rank":4},
+      "Attributes": {"INT":6, "REF":8, "DEX":0, "TECH":5, "COOL":7, "WILL":0, "MOVE":0, "BODY":0, "EMP":0, "LUCK":1, "HP":40},
+      "Skills": {"Perception":6, "Human Perception":2},
+      "Gear": {"Very Heavy Pistol": 1, "Shotgun": 1, "Bullets": 20},
+      "Notes": {"Lifepath":"Blah", "Role Lifepath":"Blah", "Notes":"Blah"}
+    }
+  ]
+}
