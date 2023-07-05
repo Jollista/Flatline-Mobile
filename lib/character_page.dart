@@ -76,28 +76,34 @@ class _MyCharacterPageState extends State<MyCharacterPage> {
         child:
         GridView.count(
           crossAxisCount: 4,
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(color: Colors.red[900],border: Border.all(width: 2, color: Colors.red.shade900),borderRadius: BorderRadius.circular(12),),
-                    child: Text("${character["Management"]["Hp"]} / ${character["Attributes"]["HP"]}", style: whiteOptionStyle, textAlign: TextAlign.center,),
-                  ),
-                  Text("HP", style: attrStyle, textAlign: TextAlign.center,),
-                ],
-              ),
-            Text(""),
-            Text(""),
+              children: [
+                Text(character["Name"].toString().toUpperCase(), style: optionStyle, textAlign: TextAlign.center,),
+                Text("${character["Role Info"]["Role"]}", style: attrStyle, textAlign: TextAlign.center,)
+              ],
+            ),
+            Image.asset("assets/images/${character["Role Info"]["Role"]}-1.jpg"),
+            Image.asset("assets/images/${character["Role Info"]["Role"]}-2.jpg"),
             Column(
               children: [
-                Text("${character["Role Info"]["Role"]}", style: optionStyle, textAlign: TextAlign.center,),
+                Text(character["Role Info"]["Role"].toString().toUpperCase(), style: optionStyle, textAlign: TextAlign.center,),
                 Text("Rank ${character["Role Info"]["Rank"]}", style: attrStyle, textAlign: TextAlign.center,),
               ],
             ),
 
-            Text(""),
-            Text(""),
-            Text(""),
+            Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(color: Colors.red[900],border: Border.all(width: 2, color: Colors.red.shade900),borderRadius: BorderRadius.circular(12),),
+                  child: Text("${character["Management"]["Hp"]} / ${character["Attributes"]["HP"]}", style: whiteOptionStyle, textAlign: TextAlign.center,),
+                ),
+                Text("HP", style: attrStyle, textAlign: TextAlign.center,),
+              ],
+            ),
+            Image.asset("assets/images/${character["Role Info"]["Role"]}-3.jpg"),
+            Image.asset("assets/images/${character["Role Info"]["Role"]}-4.jpg"),
             Column(
               children: [
                 Container(
@@ -199,7 +205,7 @@ class _MyCharacterPageState extends State<MyCharacterPage> {
                   decoration: BoxDecoration(color: Colors.red[900],border: Border.all(width: 2, color: Colors.red.shade900),borderRadius: BorderRadius.circular(12),),
                   child: Text("${character["Management"]["Luck"]} / ${character["Attributes"]["LUCK"]}", style: whiteOptionStyle, textAlign: TextAlign.center,),
                 ),
-                Text("EMP", style: attrStyle, textAlign: TextAlign.center,),
+                Text("LUCK", style: attrStyle, textAlign: TextAlign.center,),
               ],
             ),
           ],

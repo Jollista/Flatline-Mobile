@@ -91,4 +91,44 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
   assets:
-    - assets/Characters.json
+    # Image assets
+    - assets/images/Rockerboy-1.jpg
+    - assets/images/Rockerboy-2.jpg
+    - assets/images/Rockerboy-3.jpg
+    - assets/images/Rockerboy-4.jpg
+    - assets/images/Solo-1.jpg
+    - assets/images/Solo-2.jpg
+    - assets/images/Solo-3.jpg
+    - assets/images/Solo-4.jpg
+    - assets/images/Netrunner-1.jpg
+    - assets/images/Netrunner-2.jpg
+    - assets/images/Netrunner-3.jpg
+    - assets/images/Netrunner-4.jpg
+    - assets/images/Tech-1.jpg
+    - assets/images/Tech-2.jpg
+    - assets/images/Tech-3.jpg
+    - assets/images/Tech-4.jpg
+    - assets/images/Medtech-1.jpg
+    - assets/images/Medtech-2.jpg
+    - assets/images/Medtech-3.jpg
+    - assets/images/Medtech-4.jpg
+    - assets/images/Media-1.jpg
+    - assets/images/Media-2.jpg
+    - assets/images/Media-3.jpg
+    - assets/images/Media-4.jpg
+    - assets/images/Exec-1.jpg
+    - assets/images/Exec-2.jpg
+    - assets/images/Exec-3.jpg
+    - assets/images/Exec-4.jpg
+    - assets/images/Lawman-1.jpg
+    - assets/images/Lawman-2.jpg
+    - assets/images/Lawman-3.jpg
+    - assets/images/Lawman-4.jpg
+    - assets/images/Fixer-1.jpg
+    - assets/images/Fixer-2.jpg
+    - assets/images/Fixer-3.jpg
+    - assets/images/Fixer-4.jpg
+    - assets/images/Nomad-1.jpg
+    - assets/images/Nomad-2.jpg
+    - assets/images/Nomad-3.jpg
+    - assets/images/Nomad-4.jpg
