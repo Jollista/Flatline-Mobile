@@ -2,6 +2,7 @@ import 'package:flatline/chargen_lifepath.dart';
 import 'package:flatline/main.dart';
 import 'package:flutter/material.dart';
 
+//Constant integer codes for the use of incrementing and decrementing attributes
 const int INT = 0;
 const int REF = 1;
 const int DEX = 2;
@@ -12,23 +13,6 @@ const int LUCK = 6;
 const int MOVE = 7;
 const int BODY = 8;
 const int EMP = 9;
-/*
-  class MyCharacterPage extends StatefulWidget {
-  List characters;
-  String title;
-
-  MyCharacterPage({super.key, required this.title, required this.characters});
-
-  @override
-  State<MyCharacterPage> createState() => _MyCharacterPageState(characters);
-}
-
-class _MyCharacterPageState extends State<MyCharacterPage> {
-  List characters = [];
-  int _disCharIndex = -1;
-
-  _MyCharacterPageState(this.characters);
-* */
 
 class MyChargenAttrPage extends StatefulWidget {
   MyChargenAttrPage({super.key, required this.title, required this.characters});
@@ -37,10 +21,11 @@ class MyChargenAttrPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyChargenAttrPage> createState() => _MyChargenAttrPageState(characters);
+  State<MyChargenAttrPage> createState() => _MyChargenAttrPageState(characters); //get characters loaded from json from home page
 }
 
 class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
+  //initial state for attributes, skills, and other character statistics
   List characters = [];
   String name = "";
   String? _selectedRole = "";
@@ -84,19 +69,25 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
   int maxSkillPoints = 86;
   int currentSkillPoints = 60;
 
+  //preset text styles for UI
   static const TextStyle attrLabelStyle =
       TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
   static const TextStyle skillLabelStyle =
       TextStyle(fontSize: 20, fontStyle: FontStyle.italic);
 
+  //initialize characters to characters given by prev page loaded from json
+  //This is mimicked in later pages
   _MyChargenAttrPageState(this.characters);
 
+  //Cancel character creation and return home
   void _cancel() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => MyHomePage(title: 'FLATLINE')));
   }
 
+  //Save and go to next page
   void _nextPage() {
+    //Save attributes
     Map character = Map();
     print("..Name is $name");
     character["Name"] = name;
@@ -114,6 +105,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
       "LUCK": luck,
       "HP": ((body + will) / 2).ceil() * 5 + 10
     };
+    //Save management stuff (ip, current HP, humanity, and current luck)
     character["Management"]= {
       "ip":0,
       "ip total":0,
@@ -121,7 +113,9 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
       "Hum":emp,
       "Luck":luck
     };
+    //Save skills
     character["Skills"] = skills;
+    //Add character to characters
     characters.add(character);
 
     //go to next page
@@ -135,6 +129,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
   }
 
   //increment attribute given code
+  //attributes cannot be less than 2 or greater than 8
   void increment(int attribute) {
     if (currentStatPoints == 0) return;
 
@@ -253,6 +248,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
   }
 
   //decrement attribute given code
+  //attributes cannot be less than 2 or greater than 8
   void decrement(int attribute) {
     switch (attribute) {
       case INT:
@@ -368,6 +364,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
     }
   }
 
+  //increment a given skill
   void incrementSkill({String skill = "Concentration", bool difficult = false})
   {
     //initialize skill if doesn't exist already
@@ -389,6 +386,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
     });
   }
 
+  //decrement a given skill
   void decrementSkill({String skill="Concentration", bool required=false, bool difficult=false})
   {
     //initialize skill if doesn't exist already
@@ -404,6 +402,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
       skills[skill] -= 1;
       currentSkillPoints++;
 
+      //difficult skills require 2 skill points instead of 1
       if (difficult)
       {
         currentSkillPoints++;
@@ -411,6 +410,7 @@ class _MyChargenAttrPageState extends State<MyChargenAttrPage> {
     });
   }
 
+  //UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(

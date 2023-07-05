@@ -1,21 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'character_page.dart';
 import 'chargen_attributes.dart';
-import 'chargen_inventory.dart';
-import 'chargen_lifepath.dart';
 import 'package:path_provider/path_provider.dart';
-
-Directory local_directory = Directory("");
 
 Future<void> main() async {
   runApp(const MyApp());
-  print("Awaiting local directory now");
-  local_directory = await getApplicationDocumentsDirectory();
-  print("Local path: " + local_directory.path);
 }
 
 class MyApp extends StatelessWidget {
@@ -47,50 +38,29 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List _characters = [];
 
-  _myHomePageState() {
-    readJson();
-  }
-
   //Read characters from Characters.json in app documents directory
   //If no such file exists, create one.
-  Future<void> readJson() async {
+  Future<void> readJson({bool alert=false}) async {
     try {
+      //get directory
       final Directory directory = await getApplicationDocumentsDirectory();
+      //open file
       final File file = File('${directory.path}/Characters.json');
+      //await and decode response
       final String response = await file.readAsString();
       final data = await jsonDecode(response);
       setState(() {
+        //if successful, load into _characters
         _characters = data["Characters"];
         print("..Number of characters ${_characters.length}");
         print("..Contents of characters[]:\n $_characters");
-        if (_characters.length == 0)
-        {
-          showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-              backgroundColor: Colors.black,
-              title: const Text("No Characters", style: TextStyle(color: Colors.white)),
-              content: const Text("Press the + button in the bottom right corner to make a new character.", style: TextStyle(color: Colors.white)),
-              actions: <Widget>[
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(ctx).pop();
-                    },
-                    child: Center(
-                        child: Container(
-                          color: Colors.red,
-                          padding: const EdgeInsets.all(14),
-                          child: const Text("OK", style: TextStyle(color: Colors.white)),
-                        )
-                    )
-                ),
-              ],
-            ),
-          );
-        }
+        //if _characters is empty, i.e. no characters, popup alert dialogue that there are no characters
+        //only show if alert is true
+        if (alert && _characters.length == 0) {showNoCharAlert();}
       });
     }
     catch (e) {
+      //if characters.json does not exist, i.e. first time opening app, create a new json in local directory
       print("... File not found\n... Creating Characters.json...");
       String text = '{"Characters": []}';
       final Directory directory = await getApplicationDocumentsDirectory();
@@ -99,6 +69,34 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //show alert dialogue saying there are no characters.
+  void showNoCharAlert()
+  {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.black,
+        title: const Text("No Characters", style: TextStyle(color: Colors.white)),
+        content: const Text("Press the + button in the bottom right corner to make a new character.", style: TextStyle(color: Colors.white)),
+        actions: <Widget>[
+          TextButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Center(
+                  child: Container(
+                    color: Colors.red,
+                    padding: const EdgeInsets.all(14),
+                    child: const Text("OK", style: TextStyle(color: Colors.white)),
+                  )
+              )
+          ),
+        ],
+      ),
+    );
+  }
+
+  //delete all characters
   void deleteAll()
   {
     while(_characters.isNotEmpty)
@@ -107,9 +105,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  //delete character at a given index
   Future<void> deleteCharacter(int index)
   async {
+    //delete character at index
     _characters.removeAt(index);
+
+    //save changes
     Map jsonMap = Map();
     jsonMap["Characters"] = _characters;
     final Directory directory = await getApplicationDocumentsDirectory();
@@ -119,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print("..Contents of Characters.json:\n$toSave");
   }
 
+  //Show deletion confirmation dialogue on long press of character card
   void confirmDeletion(int index)
   {
     showDialog(
@@ -164,13 +167,20 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  //create a new character, i.e. go to chargen page path
   void _newCharacter() {
+    //read JSON in case it hasn't been already, i.e. user doesn't click on display
+    // characters button before creating a new character
+    readJson();
+    //go to next page
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MyChargenAttrPage(title: 'ASSIGN ATTRIBUTES', characters: _characters,))
     );
   }
 
+  //UI, on button click, read from JSON and display a list of cards with basic character information
+  //Click on a card to view the character in detail
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,7 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
               )
           ): ElevatedButton(
             onPressed: () {
-              readJson();
+              readJson(alert:true);
             },
             child: Center(child: Text("ENTER THE NET")),
           )

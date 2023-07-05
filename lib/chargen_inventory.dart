@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flatline/chargen_lifepath.dart';
-import 'package:flatline/character_page.dart';
 import 'package:flatline/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,15 +13,20 @@ class MyChargenInvPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyChargenInvPage> createState() => _MyChargenInvPageState(characters);
+  State<MyChargenInvPage> createState() => _MyChargenInvPageState(characters); //get characters from prev page
 }
 
 class _MyChargenInvPageState extends State<MyChargenInvPage> {
+  //character information
   List characters = [];
   Map character = Map();
+
+  //map for purchased gear
   Map gear = Map();
+  //max funds to purchase equipment
   int funds = 2550;
 
+  //preset styles for UI
   static const TextStyle headerStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const TextStyle itemLabelStyle =
@@ -33,10 +36,13 @@ class _MyChargenInvPageState extends State<MyChargenInvPage> {
 
   _MyChargenInvPageState(this.characters)
   {
+    //active character being built was added to end of characters list
     character = characters[characters.length-1];
   }
 
+  //return to previous page
   void _prevPage() {
+    //Do not save, go to previous page without saving purchased gear
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -46,25 +52,37 @@ class _MyChargenInvPageState extends State<MyChargenInvPage> {
                 )));
   }
 
+  //Go to next page
   void _nextPage() {
+    //save purchased gear to character
     character["Gear"]=gear;
+    //save changes to character to json
     saveJSON();
+    //go home
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => MyHomePage(title: "CHARACTER CREATED")));
   }
 
+  //save character to Characters.json
   Future<void> saveJSON() async {
+    //create an initialize a json map and set its value to characters, passed through screens
     Map jsonMap = Map();
     jsonMap["Characters"] = characters;
+
+    //get local documents directory with path_provider to persist after app closes
     final Directory directory = await getApplicationDocumentsDirectory();
+    //access Characters.json save file
     final File file = File('${directory.path}/Characters.json');
+    //encode json map as string
     final String toSave = jsonEncode(jsonMap);
+    //save to file
     file.writeAsString(toSave);
     print("..Contents of Characters.json:\n$toSave");
   }
 
+  //Buy an item
   void buy({String item = "Bullets", int cost = 10}) {
     //if too expensive, return
     if (funds < cost){return;}
@@ -79,6 +97,7 @@ class _MyChargenInvPageState extends State<MyChargenInvPage> {
     });
   }
 
+  //Sell an item
   void sell({String item="Bullets", int cost=10}) {
     //if has none, return
     if (!gear.containsKey(item)){return;}
@@ -93,6 +112,7 @@ class _MyChargenInvPageState extends State<MyChargenInvPage> {
     if (gear[item] == 0){gear.remove(item);}
   }
 
+  //UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(

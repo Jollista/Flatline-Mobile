@@ -9,19 +9,24 @@ class MyChargenLifepathPage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyChargenLifepathPage> createState() => _MyChargenLifepathPageState(characters);
+  State<MyChargenLifepathPage> createState() => _MyChargenLifepathPageState(characters); //get characters from prev page
 }
 
 class _MyChargenLifepathPageState extends State<MyChargenLifepathPage> {
+  //character stuff
   List characters = [];
   Map character = Map();
+
+  //string for backstory
   String lifepath = "";
 
   _MyChargenLifepathPageState(this.characters)
   {
+    //active character being built was added to end of characters list
     character = characters[characters.length-1];
   }
 
+  //return to previous page without saving
   void _prevPage() {
     Navigator.push(
         context,
@@ -29,16 +34,20 @@ class _MyChargenLifepathPageState extends State<MyChargenLifepathPage> {
     );
   }
 
+  //save and go to next page
   void _nextPage()
   {
+    //save lifepath
     character["Notes"] = Map();
     character["Notes"]["Lifepath"] = lifepath;
+    //next page
     Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => MyChargenInvPage(title: widget.title, characters: characters))
     );
   }
 
+  //UI, text field for players to write backstory
   @override
   Widget build(BuildContext context) {
     return Scaffold(
